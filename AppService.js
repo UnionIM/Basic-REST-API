@@ -34,6 +34,26 @@ class AppService {
     arr.push({ record: temp });
     return temp;
   }
+
+  async getCategory() {
+    const temp = [];
+    for (const arrKey in arr) {
+      if ("category" in arr[arrKey]) {
+        temp.push(Object.values(arr[arrKey])[0]);
+      }
+    }
+    return temp;
+  }
+
+  async getUserById(id) {
+    for (const arrKey in arr) {
+      if ("user" in arr[arrKey]) {
+        if (Object.values(arr[arrKey])[0].id === parseInt(id)) {
+          return Object.values(arr[arrKey])[0];
+        }
+      }
+    }
+  }
 }
 
 export default new AppService();

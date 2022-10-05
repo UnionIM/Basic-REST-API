@@ -30,6 +30,35 @@ class AppController {
       res.status(500).json(e.message);
     }
   }
+
+  async getCategory(req, res) {
+    try {
+      const category = await AppService.getCategory();
+      res.json(category);
+    } catch (e) {
+      res.status(500).json(e.message);
+    }
+  }
+
+  async getUserById(req, res) {
+    try {
+      const id = req.params.id;
+      const user = await AppService.getUserById(id);
+      res.json(user);
+    } catch (e) {
+      res.status(500).json(e.message);
+    }
+  }
+
+  async getRecordByUserId(req, res) {
+    try {
+      const id = req.params.id;
+      const user = await AppService.getUserById(id);
+      res.json(user);
+    } catch (e) {
+      res.status(500).json(e.message);
+    }
+  }
 }
 
 export default new AppController();
