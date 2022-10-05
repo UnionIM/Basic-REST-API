@@ -1,0 +1,27 @@
+{
+  "name": "basic-rest-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "App.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon App.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UnionIM/Basic-REST-API.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UnionIM/Basic-REST-API/issues"
+  },
+  "homepage": "https://github.com/UnionIM/Basic-REST-API#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1"
+  }
+}
