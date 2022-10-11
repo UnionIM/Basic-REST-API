@@ -5,7 +5,8 @@
   "main": "App.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon App.js"
+    "dev": "nodemon App.js",
+    "start": "node App.js"
   },
   "repository": {
     "type": "git",
