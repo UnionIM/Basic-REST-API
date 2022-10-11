@@ -40,20 +40,23 @@ class AppController {
     }
   }
 
-  async getUserById(req, res) {
+  async getRecordByUserId(req, res) {
     try {
-      const id = req.params.id;
-      const user = await AppService.getUserById(id);
+      const userId = req.params.userId;
+      const user = await AppService.getRecordByUserId(userId);
       res.json(user);
     } catch (e) {
       res.status(500).json(e.message);
     }
   }
 
-  async getRecordByUserId(req, res) {
+  async getRecordByUserCategoryId(req, res) {
     try {
-      const id = req.params.id;
-      const user = await AppService.getUserById(id);
+      const { userId, categoryId } = req.params;
+      const user = await AppService.getRecordByUserCategoryId(
+        userId,
+        categoryId
+      );
       res.json(user);
     } catch (e) {
       res.status(500).json(e.message);

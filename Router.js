@@ -7,7 +7,10 @@ router.post("/user", AppController.createUser);
 router.post("/category", AppController.createCategory);
 router.post("/record", AppController.createRecord);
 router.get("/category", AppController.getCategory);
-router.get("/user/:id", AppController.getUserById);
 router.get("/record/:userId", AppController.getRecordByUserId);
+router.get(
+  "/record/:userId/:categoryId",
+  AppController.getRecordByUserCategoryId
+);
 
 export default router;

@@ -2,57 +2,82 @@ const arr = [];
 
 class AppService {
   async createUser(name) {
-    const id = Math.round(Math.random() * 1000000);
-    const temp = {
+    const id = Date.now();
+    const returnValue = {
       id: id,
       name: name,
     };
-    arr.push({ user: temp });
-    return temp;
+    arr.push({ user: returnValue });
+    return returnValue;
   }
 
   async createCategory(name) {
-    const id = Math.round(Math.random() * 1000000);
-    const temp = {
+    const id = Date.now();
+    const returnValue = {
       id: id,
       name: name,
     };
-    arr.push({ category: temp });
-    return temp;
+    arr.push({ category: returnValue });
+    return returnValue;
   }
 
   async createRecord(userId, categoryId, sum) {
-    const id = Math.round(Math.random() * 1000000);
+    const id = Date.now();
     const creationDate = new Date();
-    const temp = {
+    const returnValue = {
       id: id,
       userId: userId,
       categoryId: categoryId,
       date: creationDate,
       sum: sum,
     };
-    arr.push({ record: temp });
-    return temp;
+    arr.push({ record: returnValue });
+    return returnValue;
   }
 
   async getCategory() {
-    const temp = [];
+    const returnValue = [];
     for (const arrKey in arr) {
       if ("category" in arr[arrKey]) {
-        temp.push(Object.values(arr[arrKey])[0]);
+        returnValue.push(Object.values(arr[arrKey])[0]);
       }
     }
-    return temp;
+    return returnValue;
   }
 
-  async getUserById(id) {
+  async getRecordByUserId(id) {
+    const recordArr = [];
+    const returnValue = [];
     for (const arrKey in arr) {
-      if ("user" in arr[arrKey]) {
-        if (Object.values(arr[arrKey])[0].id === parseInt(id)) {
-          return Object.values(arr[arrKey])[0];
-        }
+      if ("record" in arr[arrKey]) {
+        recordArr.push(Object.values(arr[arrKey])[0]);
       }
     }
+    for (const recordArrKey in recordArr) {
+      if (recordArr[recordArrKey].userId === parseInt(id)) {
+        returnValue.push(recordArr[recordArrKey]);
+      }
+    }
+    return returnValue;
+  }
+
+  async getRecordByUserCategoryId(userId, categoryId) {
+    const recordArr = [];
+    const returnValue = [];
+    for (const arrKey in arr) {
+      if ("record" in arr[arrKey]) {
+        recordArr.push(Object.values(arr[arrKey])[0]);
+      }
+    }
+    for (const recordArrKey in recordArr) {
+      if (
+        recordArr[recordArrKey].userId === parseInt(userId) &&
+        recordArr[recordArrKey].categoryId === parseInt(categoryId)
+      ) {
+        returnValue.push(recordArr[recordArrKey]);
+      }
+    }
+    return returnValue;
   }
 }
 
