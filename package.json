@@ -20,7 +20,11 @@
   },
   "homepage": "https://github.com/UnionIM/Basic-REST-API#readme",
   "dependencies": {
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.25.7",
+    "sqlite3": "^5.1.2"
   },
   "devDependencies": {
     "prettier": "^2.7.1"

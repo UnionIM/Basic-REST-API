@@ -1,5 +1,6 @@
 import express from "express";
 import router from "./Router.js";
+import DataBase from "./db/db.js";
 
 const PORT = process.env.PORT || 5001;
 
@@ -7,12 +8,13 @@ const app = express();
 app.use(express.json());
 app.use("/rest-api", router);
 
-function startApp() {
+app.listen(PORT, async () => {
   try {
-    app.listen(PORT, () => console.log("SERVER STARTED ON PORT " + PORT));
+    await DataBase.authenticate();
+    await DataBase.sync();
+    console.log("Auth is success");
   } catch (err) {
-    console.log("ERROR: ", err);
+    console.error("ERROR: ", err);
   }
-}
-
-startApp();
+  console.log("SERVER STARTED ON PORT " + PORT);
+});
