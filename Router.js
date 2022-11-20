@@ -4,6 +4,7 @@ import AppController from "./AppController.js";
 const router = new Router();
 
 router.post("/user", AppController.createUser);
+router.post("/bill/:userId", AppController.addToUserBill);
 router.post("/category", AppController.createCategory);
 router.post("/record", AppController.createRecord);
 router.get("/category", AppController.getCategory);

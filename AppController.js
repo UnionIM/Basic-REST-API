@@ -17,6 +17,23 @@ class AppController {
     }
   }
 
+  async addToUserBill(req, res) {
+    try {
+      const userId = req.params.userId;
+      const { amount } = req.body;
+      if (!userId || !amount) {
+        res.status(400);
+        return res.json({
+          error: "Enter a user id and amount",
+        });
+      }
+      const bill = await AppService.addToUserBill(userId, amount);
+      res.json(bill);
+    } catch (e) {
+      res.status(500).json(e.message);
+    }
+  }
+
   async createCategory(req, res) {
     try {
       const { name } = req.body;
