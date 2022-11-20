@@ -1,83 +1,40 @@
-const arr = [];
+import User from "./db/models/User.js";
+import Category from "./db/models/Category.js";
+import Record from "./db/models/Record.js";
 
 class AppService {
   async createUser(name) {
-    const id = Date.now();
-    const returnValue = {
-      id: id,
-      name: name,
-    };
-    arr.push({ user: returnValue });
-    return returnValue;
+    return await User.create({ name });
   }
 
   async createCategory(name) {
-    const id = Date.now();
-    const returnValue = {
-      id: id,
-      name: name,
-    };
-    arr.push({ category: returnValue });
-    return returnValue;
+    return await Category.create({ name });
   }
 
   async createRecord(userId, categoryId, sum) {
-    const id = Date.now();
-    const creationDate = new Date();
-    const returnValue = {
-      id: id,
-      userId: userId,
-      categoryId: categoryId,
-      date: creationDate,
-      sum: sum,
-    };
-    arr.push({ record: returnValue });
-    return returnValue;
+    const date = new Date();
+    return await Record.create({ userId, categoryId, date, sum });
   }
 
   async getCategory() {
-    const returnValue = [];
-    for (const arrKey in arr) {
-      if ("category" in arr[arrKey]) {
-        returnValue.push(Object.values(arr[arrKey])[0]);
-      }
-    }
-    return returnValue;
+    return Category.findAll();
   }
 
   async getRecordByUserId(id) {
-    const recordArr = [];
-    const returnValue = [];
-    for (const arrKey in arr) {
-      if ("record" in arr[arrKey]) {
-        recordArr.push(Object.values(arr[arrKey])[0]);
-      }
+    const user = User.findOne({
+      where: {
+        id: id,
+      },
+    });
+    if (!user) {
+      console.error("No user with this ID");
     }
-    for (const recordArrKey in recordArr) {
-      if (recordArr[recordArrKey].userId === parseInt(id)) {
-        returnValue.push(recordArr[recordArrKey]);
-      }
-    }
-    return returnValue;
+
+    return await Record.findAll({ where: { userId: id } });
   }
 
   async getRecordByUserCategoryId(userId, categoryId) {
-    const recordArr = [];
-    const returnValue = [];
-    for (const arrKey in arr) {
-      if ("record" in arr[arrKey]) {
-        recordArr.push(Object.values(arr[arrKey])[0]);
-      }
-    }
-    for (const recordArrKey in recordArr) {
-      if (
-        recordArr[recordArrKey].userId === parseInt(userId) &&
-        recordArr[recordArrKey].categoryId === parseInt(categoryId)
-      ) {
-        returnValue.push(recordArr[recordArrKey]);
-      }
-    }
-    return returnValue;
+    return Record.findAll({ where: { userId, categoryId } });
   }
 }
 
