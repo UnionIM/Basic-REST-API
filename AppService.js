@@ -21,15 +21,14 @@ class AppService {
   }
 
   async getRecordByUserId(id) {
-    const user = User.findOne({
+    const user = await User.findOne({
       where: {
         id: id,
       },
     });
     if (!user) {
-      console.error("No user with this ID");
+      throw new Error("No user with that id");
     }
-
     return await Record.findAll({ where: { userId: id } });
   }
 
