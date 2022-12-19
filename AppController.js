@@ -1,16 +1,19 @@
 import AppService from "./AppService.js";
+import jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 class AppController {
   async createUser(req, res) {
     try {
-      const { name } = req.body;
-      if (!name) {
+      const { name, password } = req.body;
+      if (!name || !password) {
         res.status(400);
         return res.json({
-          error: "Enter a user name",
+          error: "Enter a user name and password",
         });
       }
-      const user = await AppService.createUser(name);
+      const user = await AppService.createUser(name, password);
       res.json(user);
     } catch (e) {
       res.status(500).json(e.message);
@@ -61,6 +64,29 @@ class AppController {
       }
       const record = await AppService.createRecord(userId, categoryId, sum);
       res.json(record);
+    } catch (e) {
+      res.status(500).json(e.message);
+    }
+  }
+
+  async loginUser(req, res) {
+    try {
+      const { name, password } = req.body;
+      if (!name || !password) {
+        res.status(400);
+        return res.json({
+          error: "Incorrect data, enter username and password",
+        });
+      }
+      const login = await AppService.loginUser(name, password);
+      login.token = jwt.sign(
+        { id: login.id, name },
+        process.env.JWT_SECRET_KEY,
+        {
+          expiresIn: "2h",
+        }
+      );
+      res.json(login);
     } catch (e) {
       res.status(500).json(e.message);
     }

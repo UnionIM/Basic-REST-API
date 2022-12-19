@@ -10,6 +10,9 @@ const User = DataBase.define("User", {
   name: {
     type: DataTypes.STRING,
   },
+  password: {
+    type: DataTypes.STRING,
+  },
 });
 
 export default User;

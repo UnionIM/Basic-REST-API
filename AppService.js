@@ -1,13 +1,22 @@
 import User from "./db/models/User.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 import Category from "./db/models/Category.js";
 import Record from "./db/models/Record.js";
 import Bill from "./db/models/Bill.js";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 class AppService {
-  async createUser(name) {
-    const user = await User.create({ name });
+  async createUser(name, password) {
+    const encPassword = await bcrypt.hash(password, 6);
+    const user = await User.create({ name, password: encPassword });
+    const dbo = user.get();
+    dbo.token = jwt.sign({ id: user.id, name }, process.env.JWT_SECRET_KEY, {
+      expiresIn: "2h",
+    });
     await Bill.create({ userId: user.id });
-    return user;
+    return dbo;
   }
 
   async addToUserBill(userId, amount) {
@@ -31,6 +40,22 @@ class AppService {
     }
     await Bill.update({ amount: +bill.amount - +sum }, { where: { userId } });
     return await Record.create({ userId, categoryId, date, sum });
+  }
+
+  async loginUser(name, password) {
+    const check = await User.findOne({ where: { name } });
+    if (!check) {
+      throw new Error("This username doesn't exist");
+    }
+    const user = await User.findOne({ where: { name } });
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const dbo = user.get();
+      dbo.token = jwt.sign({ id: user.id, name }, process.env.JWT_SECRET_KEY, {
+        expiresIn: "2h",
+      });
+      return dbo;
+    }
+    return "Invalid password";
   }
 
   async getCategory() {
